@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-0-main
+The test for the pascal_triangle
 """
 pascal_triangle = __import__('0-pascal_triangle').pascal_triangle
 
