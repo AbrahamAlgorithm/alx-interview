@@ -11,15 +11,18 @@ def minOperations(n):
     if n <= 1:
         return (0)
 
-
     operations = 0
-    factor = 2
+    current_chars = 1
+    clipboard = 0
 
-    while n < 1:
-        while n % factor == 0:
-            operations += factor
-            n //= factor
-        factor += 1
+    while current_chars < n:
+        if current_chars >= n // 2:
+            clipboard = current_chars
+        else:
+            if clipboard == current_chars:
+                clipboard = 0
+            current_chars += clipboard
+            operations += 2
+            clipboard = current_chars
 
-
-    return (operations)
+    return (operations + 1)
