@@ -1,44 +1,20 @@
 #!/usr/bin/node
+// star wars api
+const reques = require('request');
+const util = require('util');
+const request = util.promisify(reques);
 
-const request = require('request');
-
-if (process.argv.length !== 3) {
-  console.error('Usage: ./0-starwars_characters.js <Movie ID>');
-  process.exit(1);
+async function star (url) {
+  const body = await (await request(url)).body;
+  const pot = JSON.parse(body);
+  const people = pot.characters;
+  for (const character of people) {
+    const bod = await (await request(character)).body;
+    const person = JSON.parse(bod);
+    console.log(person.name);
+  }
 }
 
-const movieId = process.argv[2];
-const apiUrl = `https://swapi-api.hbtn.io/api/films/${movieId}/`;
-
-request(apiUrl, (error, response, body) => {
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  if (response.statusCode !== 200) {
-    console.error(`Error: ${response.statusCode}`);
-    return;
-  }
-
-  const filmData = JSON.parse(body);
-  const characters = filmData.characters;
-
-  characters.forEach((characterUrl) => {
-    request(characterUrl, (charError, charResponse, charBody) => {
-      if (charError) {
-        console.error(charError);
-        return;
-      }
-
-      if (charResponse.statusCode !== 200) {
-        console.error(`Error: ${charResponse.statusCode}`);
-        return;
-      }
-
-      const characterData = JSON.parse(charBody);
-      console.log(characterData.name);
-    });
-  });
-});
-
+const value = process.argv[2];
+const url = 'https://swapi-api.alx-tools.com/api/films/' + value;
+star(url);
