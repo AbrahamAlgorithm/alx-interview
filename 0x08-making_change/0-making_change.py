@@ -1,7 +1,12 @@
 #!/usr/bin/python3
+"""Making changes Interview Question"""
+
+
 def makeChange(coins, total):
+    """Function to determine the minimum number of coins needed to meet a given amount total."""
     if total <= 0:
         return 0
+    
     # Initialize the dp array with a value greater than any possible number of coins
     dp = [float('inf')] * (total + 1)
     dp[0] = 0  # Base case
