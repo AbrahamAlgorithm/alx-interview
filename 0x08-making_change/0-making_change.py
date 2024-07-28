@@ -1,26 +1,32 @@
 #!/usr/bin/python3
-"""Making changes Interview Question"""
+"""
+Making Change
+"""
 
 
 def makeChange(coins, total):
-    """Function to determine the minimum number of coins needed to meet a given amount total."""
+    """
+    Determine the fewest number of coins needed to meet a given amount total.
+    
+    Args:
+    coins (list): A list of coin denominations.
+    total (int): The target amount.
+    
+    Returns:
+    int: Fewest number of coins needed to meet total. -1 if not possible.
+    """
     if total <= 0:
         return 0
-    
-    # Initialize the dp array with a value greater than any possible number of coins
+
+    # Initialize an array to store minimum coins needed for each amount
     dp = [float('inf')] * (total + 1)
-    dp[0] = 0  # Base case
-    
-    # Update dp array for each coin
-    for coin in coins:
-        for x in range(coin, total + 1):
-            dp[x] = min(dp[x], dp[x - coin] + 1)
-    
-    # If dp[total] is still infinity, return -1
+    dp[0] = 0
+
+    # Iterate through all amounts from 1 to total
+    for i in range(1, total + 1):
+        # Try each coin
+        for coin in coins:
+            if coin <= i:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+
     return dp[total] if dp[total] != float('inf') else -1
-
-# Testing the function
-if __name__ == "__main__":
-    print(makeChange([1, 2, 25], 37))  # Output: 7
-    print(makeChange([1256, 54, 48, 16, 102], 1453))  # Output: -1
-
