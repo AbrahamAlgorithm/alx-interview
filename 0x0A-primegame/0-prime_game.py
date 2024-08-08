@@ -1,40 +1,41 @@
 #!/usr/bin/python3
+"""The prime game for winner"""
 
-def is_prime(n):
-    if n < 2:
-        return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
 
 def isWinner(x, nums):
-    if x == 0 or not nums:
-        return None
+    '''The prime game to determine the winner'''
+    import math
 
-    maria_wins = 0
-    ben_wins = 0
+    def is_prime(n):
+        """check if a number is prime"""
+        if n <= 1:
+            return False
+        if n == 2:
+            return True
+        if n % 2 == 0:
+            return False
+        val = math.isqrt(n)
+        for d in range(3, val + 1, 2):
+            if n % d == 0:
+                return False
+        return True
 
-    for n in nums:
-        primes = [i for i in range(1, n+1) if is_prime(i)]
-        while primes:
-            if len(primes) == 1:
-                ben_wins += 1
-                break
-            maria_picks = primes[0]
-            primes = [p for p in primes if p % maria_picks != 0]
-            if not primes:
-                maria_wins += 1
-                break
-            ben_picks = primes[0]
-            primes = [p for p in primes if p % ben_picks != 0]
-            if not primes:
-                ben_wins += 1
-                break
+    def gen_prime(prime_lis):
+        """genearet prime from a list"""
+        prime = []
+        for val in prime_lis:
+            if is_prime(val):
+                prime.append(val)
+        return prime
 
-    if maria_wins > ben_wins:
+    playe = ['X', 'Y']
+    player = {'X': 0,  'Y': 0}
+    for i in range(x):
+        number = nums[i]
+        num_lis = range(1, number)
+        prime = gen_prime(num_lis)
+        number = ((len(prime) + 1) % 2)
+        player[playe[number]] += 1
+    if player['X'] > player['Y']:
         return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
-    else:
-        return None
+    return "Ben"
